@@ -3,7 +3,7 @@
 module Enumerable
   def my_each
     counter = 0
-    while counter < self.size
+    while counter < size
       yield(self[counter])
       counter += 1
     end
@@ -11,7 +11,7 @@ module Enumerable
 
   def my_each_with_index
     i = 0
-    while i < self.length
+    while i < size
       yield(self[i], i)
       i += 1
     end
