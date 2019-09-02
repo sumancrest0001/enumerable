@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+
 module Enumerable
   def my_each
-    counter=0
+    counter = 0
     while counter < self.size
       yield(self[counter])
       counter += 1
@@ -41,18 +42,14 @@ module Enumerable
   def my_none?
     output = true
     my_each do |ele|
-       if yield(ele) != false
-         output = false
-       end
+      output = false if yield(ele) != false
     end
     puts output
   end
 
   def my_count(number = nil)
     count = 0
-    if number == nil
-      my_each { count += 1 }
-    end
+    my_each { count += 1 } if number
     my_each do |ele|
       count += 1 if yield(ele, number)
     end
@@ -65,8 +62,8 @@ module Enumerable
     output
   end
 
-  def my_inject(x)
-    sum = x
+  def my_inject(startervalue)
+    sum = startervalue
     my_each do |ele|
       sum = yield(ele, sum)
     end
