@@ -4,7 +4,7 @@ module Enumerable
     counter=0
     while counter < self.size
       yield(self[counter])
-      counter +=1
+      counter += 1
     end
   end
 
@@ -12,6 +12,7 @@ module Enumerable
     i = 0
     while i < self.length
       yield(self[i], i)
+      i += 1
     end
   end
 
@@ -24,9 +25,7 @@ module Enumerable
   def my_all?
     output = true
     my_each do |ele|
-       if yield(ele) != true
-         output = false
-       end
+      output = false if yield(ele) != true
     end
     output
   end
@@ -34,10 +33,8 @@ module Enumerable
   def my_any?
     output = false
     my_each do |ele|
-       if yield(ele) == true
-         output = true
-       end
-     end
+      output = true if yield(ele) == true
+    end
     output
   end
 
@@ -51,32 +48,21 @@ module Enumerable
     puts output
   end
 
-  def my_count(x = nil)
+  def my_count(number = nil)
     count = 0
-    if x == nil
-      my_each { |ele| count +=1 }
+    if number == nil
+      my_each { count += 1 }
     end
     my_each do |ele|
-      if yield(ele, x)
-        count += 1
-      end
+      count += 1 if yield(ele, number)
     end
     puts count
   end
 
-  #initial version of my_map method
-=begin
   def my_map(&procs)
     output = []
-      self.my_each { |ele| output << procs.call(ele)}
-     output
-  end
-=end
-
-  def my_map(&procs)
-    output = []
-      my_each { |ele| output <<(procs.nil? ? yield(ele) : procs.call(ele))}
-     output
+    my_each { |ele| output << (procs.nil? ? yield(ele) : procs.call(ele)) }
+    output
   end
 
   def my_inject(x)
@@ -88,19 +74,19 @@ module Enumerable
   end
 
   def multiply_els
-    my_inject(1){ |ele, sum| sum * ele }
+    my_inject(1) { |ele, sum| sum * ele }
   end
 end
 array = [1, 3, 24, 6, 2, 3, 3, 3, 29, 10, 1] # total sum = 85
-modified_map = Proc.new { |ele| ele * ele }
+modified_map = proc { |ele| ele * ele }
 # array.my_each { |i| puts "doubled number is: #{i * 2}" }
 # array.my_each_with_index { |number, i| puts "index is #{i} and element is #{number}"}
 # puts array.my_select { |ele| ele.odd? }
 # array.my_all? { |ele| ele >= 2 }
 # array.my_any? { |ele| ele >= 20 }
 # array.my_none? { |ele| ele < 1 }
-# array.my_count(3) { |ele, x| ele == x }
-puts array.my_map { |ele| ele * ele }
-puts array.my_map(&modified_map)
+# array.my_count() { |ele, x| ele == number }
+# (array.my_map { |ele| ele * ele })
+# puts array.my_map(&modified_map)
 # array.my_inject { |ele, sum| sum += ele }
 # array.multiply_els { |ele, sum| sum * ele }
