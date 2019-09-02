@@ -76,7 +76,7 @@ module Enumerable
 end
 array = [1, 3, 24, 6, 2, 3, 3, 3, 29, 10, 1] # total sum = 85
 modified_map = proc { |ele| ele * ele }
-# array.my_each { |i| puts "doubled number is: #{i * 2}" }
+ array.my_each { |i| puts "doubled number is: #{i * 2}" }
 # array.my_each_with_index { |number, i| puts "index is #{i} and element is #{number}"}
 # puts array.my_select { |ele| ele.odd? }
 # array.my_all? { |ele| ele >= 2 }
@@ -84,6 +84,6 @@ modified_map = proc { |ele| ele * ele }
 # array.my_none? { |ele| ele < 1 }
 # array.my_count() { |ele, x| ele == number }
 # (array.my_map { |ele| ele * ele })
-# puts array.my_map(&modified_map)
+ puts array.my_map(&modified_map)
 # array.my_inject { |ele, sum| sum += ele }
 # array.multiply_els { |ele, sum| sum * ele }
