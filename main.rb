@@ -42,18 +42,25 @@ module Enumerable
   def my_none?
     output = true
     my_each do |ele|
-      output = false if yield(ele) != false
+      output = false if yield(ele) == true
     end
     puts output
   end
 
   def my_count(number = nil)
     count = 0
-    my_each { count += 1 } if number.nil?
-    my_each do |ele|
-      count += 1 if yield(ele, number)
+    return size if number.nil? && !block_given?
+    if number.nil? && block_given?
+      my_each do |ele|
+        count += 1 if yield(ele, number) == true
+      end
     end
-    puts count
+    if !number.nil? && block_given?
+      my_each do |ele|
+        count += 1 if yield(ele, number) == true
+      end
+    end
+    count
   end
 
   def my_map(&procs)
@@ -74,16 +81,17 @@ module Enumerable
     my_inject(1) { |ele, sum| sum * ele }
   end
 end
-array = [1, 3, 24, 6, 2, 3, 3, 3, 29, 10, 1] # total sum = 85
-modified_map = proc { |ele| ele * ele }
+array = [2, 3, 4, 2]
+# array = [1, 3, 24, 6, 2, 3, 3, 3, 29, 10, 1] # total sum = 85
+# modified_map = proc { |ele| ele * ele }
 # array.my_each { |i| puts "doubled number is: #{i * 2}" }
 # array.my_each_with_index { |number, i| puts "index is #{i} and element is #{number}"}
 # puts array.my_select { |ele| ele.odd? }
 # array.my_all? { |ele| ele >= 2 }
 # array.my_any? { |ele| ele >= 20 }
-# array.my_none? { |ele| ele < 1 }
-array.my_count(2) { |ele, number| ele == number }
+# array.my_none? { |ele| ele = 1 }
+puts array.my_count(2){ |ele, number| ele== number }
 # ( array.my_map { |ele| ele * ele } )
-puts array.my_map( &modified_map )
+#puts array.my_map(&modified_map)
 # array.my_inject(0) { |ele, sum| sum += ele }
 # array.multiply_els { |ele, sum| sum * ele }
