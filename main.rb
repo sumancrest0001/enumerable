@@ -49,7 +49,7 @@ module Enumerable
 
   def my_count(number = nil)
     count = 0
-    my_each { count += 1 } if number == nil
+    my_each { count += 1 } if number.nil?
     my_each do |ele|
       count += 1 if yield(ele, number)
     end
@@ -82,8 +82,8 @@ modified_map = proc { |ele| ele * ele }
 # array.my_all? { |ele| ele >= 2 }
 # array.my_any? { |ele| ele >= 20 }
 # array.my_none? { |ele| ele < 1 }
-array.my_count() { |ele, number| ele == number }
+array.my_count(2) { |ele, number| ele == number }
 # ( array.my_map { |ele| ele * ele } )
-# puts array.my_map( &modified_map )
+puts array.my_map( &modified_map )
 # array.my_inject(0) { |ele, sum| sum += ele }
 # array.multiply_els { |ele, sum| sum * ele }
