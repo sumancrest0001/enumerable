@@ -42,12 +42,12 @@ module Enumerable
   def my_none?(arg = nil)
     output = true
     if  block_given?
-      my_each {|ele| output = false if yield(ele, arg) == true }
-    elsif ! block_given?
-      my_each {|ele| output = false if ele == arg} if arg !=nil
-      my_each { |ele| output = false if ele != nil} if arg.nil?
+      my_each { |ele| output = false if yield(ele, arg) == true }
+    elsif !block_given?
+      my_each { |ele| output = false if ele == arg } if !arg.nil?
+      my_each { |ele| output = false if !ele.nil? } if arg.nil?
     end
-   output
+    output
   end
 
   def my_count(number = nil)
@@ -55,9 +55,9 @@ module Enumerable
     if block_given?
       my_each { |ele| count += 1 if yield(ele, number) == true }
     elsif number.nil?
-      my_each {count += 1}
+      my_each { count += 1 }
     else
-      my_each { |ele| count += 1 if ele == number}
+      my_each { |ele| count += 1 if ele == number }
     end
     count
   end
@@ -69,8 +69,8 @@ module Enumerable
   end
 
   def my_inject(startervalue = nil)
-    sum = startervalue if (startervalue != nil)
-    sum = 0 if (startervalue == nil)
+    sum = startervalue if !startervalue.nil?
+    sum = 0 if startervalue.nil?
     my_each do |ele|
       sum = yield(ele, sum)
     end
@@ -89,7 +89,7 @@ array = [1, 2, 3, 4, 5]
 # puts array.my_select { |ele| ele.odd? }
 # array.my_all? { |ele| ele >= 2 }
 # array.my_any? { |ele| ele >= 20 }
- puts array.my_none?(2) { |ele, arg| ele > arg }
+puts array.my_none?(2) { |ele, arg| ele > arg }
 # puts array.my_count(2) { |ele, number| ele > 1 }
 # ( array.my_map { |ele| ele * ele } )
 # puts array.my_map(&modified_map)
