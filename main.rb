@@ -39,26 +39,25 @@ module Enumerable
     output
   end
 
-  def my_none?
+  def my_none?(arg = nil)
     output = true
-    my_each do |ele|
-      output = false if yield(ele) == true
+    if  block_given?
+      my_each {|ele| output = false if yield(ele, arg) == true }
+    elsif ! block_given?
+      my_each {|ele| output = false if ele == arg} if arg !=nil
+      my_each { |ele| output = false if ele != nil} if arg.nil?
     end
-    puts output
+   output
   end
 
   def my_count(number = nil)
     count = 0
-    return size if number.nil? && !block_given?
-    if number.nil? && block_given?
-      my_each do |ele|
-        count += 1 if yield(ele, number) == true
-      end
-    end
-    if !number.nil? && block_given?
-      my_each do |ele|
-        count += 1 if yield(ele, number) == true
-      end
+    if block_given?
+      my_each { |ele| count += 1 if yield(ele, number) == true }
+    elsif number.nil?
+      my_each {count += 1}
+    else
+      my_each { |ele| count += 1 if ele == number}
     end
     count
   end
@@ -69,19 +68,20 @@ module Enumerable
     output
   end
 
-  def my_inject(startervalue)
-    sum = startervalue
+  def my_inject(startervalue = nil)
+    sum = startervalue if (startervalue != nil)
+    sum = 0 if (startervalue == nil)
     my_each do |ele|
       sum = yield(ele, sum)
     end
-    puts sum
+    sum
   end
 
   def multiply_els
     my_inject(1) { |ele, sum| sum * ele }
   end
 end
-array = [2, 3, 4, 2]
+array = [1, 2, 3, 4, 5]
 # array = [1, 3, 24, 6, 2, 3, 3, 3, 29, 10, 1] # total sum = 85
 # modified_map = proc { |ele| ele * ele }
 # array.my_each { |i| puts "doubled number is: #{i * 2}" }
@@ -89,9 +89,9 @@ array = [2, 3, 4, 2]
 # puts array.my_select { |ele| ele.odd? }
 # array.my_all? { |ele| ele >= 2 }
 # array.my_any? { |ele| ele >= 20 }
-# array.my_none? { |ele| ele = 1 }
-puts array.my_count(2) { |ele, number| ele == number }
+ puts array.my_none?(2) { |ele, arg| ele > arg }
+# puts array.my_count(2) { |ele, number| ele > 1 }
 # ( array.my_map { |ele| ele * ele } )
 # puts array.my_map(&modified_map)
-# array.my_inject(0) { |ele, sum| sum += ele }
+# array.my_inject { |ele, sum| sum += ele }
 # array.multiply_els { |ele, sum| sum * ele }
