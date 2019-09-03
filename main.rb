@@ -26,7 +26,7 @@ module Enumerable
   def my_all?
     output = true
     my_each { |ele| output = false if yield(ele) != true } if block_given?
-    my_each { |ele| output = false if ele == nil || ele == false} if !block_given?
+    my_each { |ele| output = false if ele.nil? || ele == false } if !block_given?
     output
   end
 
@@ -40,11 +40,11 @@ module Enumerable
 
   def my_none?(arg = nil)
     output = true
-    if  block_given?
+    if block_given?
       my_each { |ele| output = false if yield(ele, arg) == true }
     elsif !block_given?
       my_each { |ele| output = false if ele == arg } if !arg.nil?
-      my_each { |ele| output = false if ! ele ==false || ! ele == nil  } if arg.nil?
+      my_each { |ele| output = false if !ele == false || !ele.nil? } if arg.nil?
     end
     output
   end
@@ -70,6 +70,7 @@ module Enumerable
   def my_inject(memo = nil, sym = nil)
     return my_inject(nil, memo) if memo.is_a? Symbol
     return my_inject(memo) { |mem, e| :+.to_proc.call(mem, e) } unless sym.nil?
+
     my_each { |e| memo = memo.nil? ? first : yield(memo, e) }
     memo
   end
