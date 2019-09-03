@@ -25,9 +25,8 @@ module Enumerable
 
   def my_all?
     output = true
-    my_each do |ele|
-      output = false if yield(ele) != true
-    end
+    my_each { |ele| output = false if yield(ele) != true } if block_given?
+    my_each { |ele| output = false if ele == nil || ele == false} if !block_given?
     output
   end
 
@@ -45,7 +44,7 @@ module Enumerable
       my_each { |ele| output = false if yield(ele, arg) == true }
     elsif !block_given?
       my_each { |ele| output = false if ele == arg } if !arg.nil?
-      my_each { |ele| output = false if !ele.nil? } if arg.nil?
+      my_each { |ele| output = false if ! ele ==false || ! ele == nil  } if arg.nil?
     end
     output
   end
@@ -68,30 +67,14 @@ module Enumerable
     output
   end
 
-  def my_inject(startervalue = nil)
-    sum = startervalue if !startervalue.nil?
-    sum = 0 if startervalue.nil?
-    my_each do |ele|
-      sum = yield(ele, sum)
-    end
-    sum
+  def my_inject(memo = nil, sym = nil)
+    return my_inject(nil, memo) if memo.is_a? Symbol
+    return my_inject(memo) { |mem, e| :+.to_proc.call(mem, e) } unless sym.nil?
+    my_each { |e| memo = memo.nil? ? first : yield(memo, e) }
+    memo
   end
 
   def multiply_els
-    my_inject(1) { |ele, sum| sum * ele }
+    my_inject { |ele, sum| sum * ele }
   end
 end
-array = [1, 2, 3, 4, 5]
-# array = [1, 3, 24, 6, 2, 3, 3, 3, 29, 10, 1] # total sum = 85
-# modified_map = proc { |ele| ele * ele }
-# array.my_each { |i| puts "doubled number is: #{i * 2}" }
-# array.my_each_with_index { |number, i| puts "index is #{i} and element is #{number}"}
-# puts array.my_select { |ele| ele.odd? }
-# array.my_all? { |ele| ele >= 2 }
-# array.my_any? { |ele| ele >= 20 }
-puts array.my_none?(2) { |ele, arg| ele > arg }
-# puts array.my_count(2) { |ele, number| ele > 1 }
-# ( array.my_map { |ele| ele * ele } )
-# puts array.my_map(&modified_map)
-# array.my_inject { |ele, sum| sum += ele }
-# array.multiply_els { |ele, sum| sum * ele }
