@@ -40,11 +40,14 @@ module Enumerable
 
   def my_none?(arg = nil)
     output = true
-    if block_given?
-      my_each { |ele| output = false if yield(ele, arg) == true }
+    if !block_given?
+      if arg.nil?
+        my_each { |ele| output = false if !ele == false || !ele.nil? }
+      else
+        my_each { |ele| output = false if ele == arg }
+      end
     else
-      my_each { |ele| output = false if ele == arg } unless arg.nil?
-      my_each { |ele| output = false if !ele == false || !ele.nil? } if arg.nil?
+      my_each { |ele| output = false if yield(ele, arg) == true }
     end
     output
   end
