@@ -26,7 +26,7 @@ module Enumerable
   def my_all?
     output = true
     my_each { |ele| output = false if yield(ele) != true } if block_given?
-    my_each { |ele| output = false if ele.nil? || ele == false } if !block_given?
+    my_each { |ele| output = false if ele.nil? || ele == false } unless block_given?
     output
   end
 
@@ -42,8 +42,8 @@ module Enumerable
     output = true
     if block_given?
       my_each { |ele| output = false if yield(ele, arg) == true }
-    elsif !block_given?
-      my_each { |ele| output = false if ele == arg } if !arg.nil?
+    else
+      my_each { |ele| output = false if ele == arg } unless arg.nil?
       my_each { |ele| output = false if !ele == false || !ele.nil? } if arg.nil?
     end
     output
