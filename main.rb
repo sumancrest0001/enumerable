@@ -42,7 +42,7 @@ module Enumerable
     output = true
     if !block_given?
       if arg.nil?
-        my_each { |ele| output = false if ele}
+        my_each { |ele| output = false if ele }
       else
         my_each { |ele| output = false if ele == arg }
       end
@@ -82,5 +82,3 @@ module Enumerable
     my_inject { |ele, sum| sum * ele }
   end
 end
-
-array = [1, 2, 3]
