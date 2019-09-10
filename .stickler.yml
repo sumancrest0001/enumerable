@@ -1,0 +1,6 @@
+
+linters:
+  rubocop:
+    display_cop_names: true
+    Documentation:
+      Enabled: false
