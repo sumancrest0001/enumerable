@@ -38,18 +38,10 @@ module Enumerable
     output
   end
 
-  def my_none?(arg = nil)
+  def my_none?
     output = true
-    if !block_given?
-      if arg.nil?
         my_each { |ele| output = false if ele }
-      else
-        my_each { |ele| output = false if ele == arg }
-      end
-    else
-      my_each { |ele| output = false if yield(ele, arg) == true }
-    end
-    output
+    return output
   end
 
   def my_count(number = nil)
