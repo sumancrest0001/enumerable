@@ -40,8 +40,8 @@ module Enumerable
 
   def my_none?
     output = true
-        my_each { |ele| output = false if ele }
-    return output
+    my_each { |ele| output = false if ele }
+    output
   end
 
   def my_count(number = nil)
