@@ -1,14 +1,9 @@
-# frozen_string_literal: true
-
 module Enumerable
   def my_each
-    counter = 0
-    while counter < size
-      yield(self[counter])
-      counter += 1
+    for i in 0...size
+      yield(self[i])
     end
   end
-
   def my_each_with_index
     i = 0
     while i < size
@@ -16,20 +11,6 @@ module Enumerable
       i += 1
     end
   end
-
-  def my_select
-    output = 0
-    my_each { |ele| output == ele if yield(ele) }
-    output
-  end
-
-  def my_all?
-    output = true
-    my_each { |ele| output = false if yield(ele) == true } if block_given?
-    my_each { |ele| output = false if ele.nil? || ele == false } unless block_given?
-    output
-  end
-
   def my_any?
     output = false
     my_each do |ele|
@@ -37,10 +18,15 @@ module Enumerable
     end
     output
   end
-
-  def my_none?
+  def my_all?
     output = true
-    my_each { |ele| output = false if ele }
+    my_each { |ele| output = false if yield(ele) == true } if block_given?
+    my_each { |ele| output = false if ele.nil? || ele == false } unless block_given?
+    output
+  end
+  def my_select
+    output = []
+    my_each { |ele| output << ele if yield(ele) }
     output
   end
 
@@ -55,13 +41,16 @@ module Enumerable
     end
     count
   end
-
   def my_map(&procs)
     output = []
     my_each { |ele| output << (procs.nil? ? yield(ele) : procs.call(ele)) }
     output
   end
-
+  def my_none?
+    output = true
+    my_each { |ele| output = false if ele }
+    output
+  end
   def my_inject(memo = nil, sym = nil)
     return my_inject(nil, memo) if memo.is_a? Symbol
     return my_inject(memo) { |mem, e| :+.to_proc.call(mem, e) } unless sym.nil?
@@ -69,7 +58,6 @@ module Enumerable
     my_each { |e| memo = memo.nil? ? first : yield(memo, e) }
     memo
   end
-
   def multiply_els
     my_inject { |ele, sum| sum * ele }
   end
