@@ -17,7 +17,7 @@ RSpec.describe 'Enumerable' do
   describe '#my_each_with_index' do
     context 'when input is valid' do
       it 'should display array of index' do
-        test_arr.my_each_with_index { |n, i| newArr << i }
+        test_arr.my_each_with_index { |_n, i| newArr << i }
         expect(newArr).to eql([0, 1, 2, 3, 4])
       end
 
@@ -151,7 +151,7 @@ RSpec.describe 'Enumerable' do
 
     context 'when one element is not integer' do
       it 'should be give noMethod error' do
-        expect{ arr3.multiply_els { |sum, ele| sum * ele }}.to raise_error(NoMethodError)
+        expect { arr3.multiply_els { |sum, ele| sum * ele } }.to raise_error(NoMethodError)
       end
     end
   end
