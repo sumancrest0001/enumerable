@@ -2,5 +2,11 @@
 linters:
   rubocop:
     display_cop_names: true
-    Documentation:
-      Enabled: false
+files:
+  ignore:
+    - "bin/*"
+    - "db/*"
+    - "config/*"
+    - "Guardfile"
+    - "Rakefile"
+    - "spec/spec_helper.rb"

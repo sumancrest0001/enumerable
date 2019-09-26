@@ -18,14 +18,14 @@ module Enumerable
   end
 
   def my_select
-    output = []
-    my_each { |ele| output << ele if yield(ele) }
+    output = 0
+    my_each { |ele| output == ele if yield(ele) }
     output
   end
 
   def my_all?
     output = true
-    my_each { |ele| output = false if yield(ele) != true } if block_given?
+    my_each { |ele| output = false if yield(ele) == true } if block_given?
     my_each { |ele| output = false if ele.nil? || ele == false } unless block_given?
     output
   end
