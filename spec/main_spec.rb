@@ -17,7 +17,7 @@ RSpec.describe 'Enumerable' do
   describe '#my_each_with_index' do
     context 'when input is valid' do
       it 'should display array of index' do
-        test_arr.my_each_with_index { |i| newArr << i }
+        test_arr.my_each_with_index { |n, i| newArr << i }
         expect(newArr).to eql([0, 1, 2, 3, 4])
       end
 
@@ -31,19 +31,19 @@ RSpec.describe 'Enumerable' do
   describe '#my_any? method' do
     context 'when valid input is not given' do
       it 'result should be false' do
-        expect(test_arr.any? { |ele| ele > 20 }).to eql(false)
+        expect(test_arr.my_any? { |ele| ele > 20 }).to eql(false)
       end
     end
 
     context 'when valid input is given' do
       it 'result should be true' do
-        expect(test_arr.any? { |ele| ele < 20 }).to eql(true)
+        expect(test_arr.my_any? { |ele| ele < 20 }).to eql(true)
       end
     end
 
     describe 'when input is empty' do
       it 'result is false' do
-        expect([].any? { |ele| ele < 20 }).to eql(false)
+        expect([].my_any? { |ele| ele < 20 }).to eql(false)
       end
     end
   end
@@ -80,21 +80,6 @@ RSpec.describe 'Enumerable' do
     context 'when block is not given' do
       it 'should return true as it does not contain neither false nor nil ' do
         expect(test_arr.my_all?).to be true
-      end
-    end
-  end
-
-  describe '#multiply_els method' do
-    context 'my_inject method is implemented for the multiplication' do
-      it 'should give product of each element' do
-        expect(test_arr.multiply_els { |sum, ele| sum * ele }).to be 1620
-      end
-    end
-
-    context 'when one element is zero' do
-      let(:arr) { [1, 3, 0] }
-      it 'should be equal to zero' do
-        expect(arr.multiply_els { |sum, ele| sum * ele }).to be 0
       end
     end
   end
@@ -150,6 +135,8 @@ RSpec.describe 'Enumerable' do
   end
 
   describe '#multiply_els method' do
+    let(:arr2) { [1, 3, 0] }
+    let(:arr3) { [1, 3, nil] }
     context 'my_inject method is implemented' do
       it 'should give product of each element' do
         expect(test_arr.multiply_els { |sum, ele| sum * ele }).to be 1620
@@ -157,9 +144,14 @@ RSpec.describe 'Enumerable' do
     end
 
     context ' when one element is zero' do
-      let(:arr) { [1, 3, 0] }
       it 'should be equal to zero' do
-        expect(arr.multiply_els { |sum, ele| sum * ele }).to be 0
+        expect(arr2.multiply_els { |sum, ele| sum * ele }).to be 0
+      end
+    end
+
+    context ' when one element is not integer' do
+      it 'should be give noMethod error' do
+        expect{arr3.multiply_els { |sum, ele| sum * ele }}.to raise_error(NoMethodError)
       end
     end
   end
