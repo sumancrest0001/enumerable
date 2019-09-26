@@ -151,7 +151,7 @@ RSpec.describe 'Enumerable' do
 
     context ' when one element is not integer' do
       it 'should be give noMethod error' do
-        expect{arr3.multiply_els { |sum, ele| sum * ele }}.to raise_error(NoMethodError)
+        expect{ arr3.multiply_els { |sum, ele| sum * ele }}.to raise_error(NoMethodError)
       end
     end
   end
