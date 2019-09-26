@@ -143,13 +143,13 @@ RSpec.describe 'Enumerable' do
       end
     end
 
-    context ' when one element is zero' do
+    context 'when one element is zero' do
       it 'should be equal to zero' do
         expect(arr2.multiply_els { |sum, ele| sum * ele }).to be 0
       end
     end
 
-    context ' when one element is not integer' do
+    context 'when one element is not integer' do
       it 'should be give noMethod error' do
         expect{ arr3.multiply_els { |sum, ele| sum * ele }}.to raise_error(NoMethodError)
       end
